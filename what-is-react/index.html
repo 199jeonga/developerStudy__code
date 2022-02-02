@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Example</title>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script type="text/javascript">
+      console.log(React);
+      console.log(ReactDOM);
+
+      // ReactDOM.render(
+      //   React.createElement("h1", null, `type이 "태그이름 문자열" 입니다.`)
+      //   document.querySelector("#root")
+      // );
+
+      // const Component = ()=>{
+      //   return React.createElement('p', null, `type이 "React 컴포넌트"입니다.`)
+      // }
+      // ReactDOM.render(
+      //   React.createElement(Component, null, null),
+      //   document.querySelector("#root")
+      // );
+      // ReactDOM.render(
+      //   React.createElement(
+      //     React.Fragment,
+      //     null,
+      //     `type이 "React.Fragment"입니다.`
+      //   ),
+      //   document.querySelector("#root")
+      // )
+
+      ReactDOM.render(
+        //여태는 태그를 하나씩만 생성했다.
+        
+        document.querySelector("#root")
+      )
+
+    </script>
+  </body>
+</html>
