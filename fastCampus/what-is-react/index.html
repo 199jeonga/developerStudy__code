@@ -2,46 +2,69 @@
 <html lang="ko-KR">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Example</title>
   </head>
-  <body>
+  <body> 
     <div id="root"></div>
 
     <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
-    <script type="text/javascript">
+    <script type="text/babel">
       console.log(React);
       console.log(ReactDOM);
 
-      // ReactDOM.render(
-      //   React.createElement("h1", null, `type이 "태그이름 문자열" 입니다.`)
-      //   document.querySelector("#root")
-      // );
-
-      // const Component = ()=>{
-      //   return React.createElement('p', null, `type이 "React 컴포넌트"입니다.`)
+      // function Component(props){
+      //   return (<div><h1>{props.message}이것은 함수로 만든 컴포넌트 입니다.</h1></div>);
       // }
-      // ReactDOM.render(
-      //   React.createElement(Component, null, null),
-      //   document.querySelector("#root")
-      // );
-      // ReactDOM.render(
-      //   React.createElement(
-      //     React.Fragment,
-      //     null,
-      //     `type이 "React.Fragment"입니다.`
-      //   ),
-      //   document.querySelector("#root")
-      // )
+      
+      // function Component(){
+      //   // return <div><button onClick={}>클릭</button></div>
+      //   return <div><button onClick={()=>{
+      //     console.log('clicked');
+      //   }}>클릭</button></div>
+      // }
+      // ReactDOM.render(<Component />, document.querySelector("#root"));
+      class App extends React.Component{
+        state = {
+          age:39,
+        }
+        constructor(props){
+          super(props);
+          console.log('constructor');
+        }
+        render(){
+          console.log('render');
+          return(
+            <div>
+              <h2>Hello {this.props.name} - {this.state.age}</h2>
+            </div>
+          )
+        }
+        componentWillReceiveProps(nextProps){
+          // 바뀔 Props가 들어온다.
+          console.log('componentWillReceiveProps', nextProps);
+        }
 
-      ReactDOM.render(
-        //여태는 태그를 하나씩만 생성했다.
-        
-        document.querySelector("#root")
-      )
+        shouldComponentUpdate(nextProps, nextState){
+          // true, false를 return한다.
+          console.log('shouldComponentUpdate', nextProps, nextState);
+          // ture가 나온다면 다음단계로 진행되나 false를 하면 stats나 Props가 변경됐음에도 불구하고 render가 다시 진행되지 않는다.
+          // 따라서 조건문을 사용하여 작성하면 효율적인 코드 작성이 가능하다.
+          return false;
+        }
+        // render가 발생되기 전이기 때문에 next~~
+        componentWillUpdate(nextProps, nextState){
+          console.log('componentWillUpdate', nextProps, nextState);
+        }
 
+        componentDidUpdate(prevProps, prevState){
+          console.log('componentDidUpdate', nextProps, nextState);
+        }
+      }
+
+      ReactDOM.render(<App name="Mark" />, document.querySelector('#root'));
     </script>
   </body>
 </html>
