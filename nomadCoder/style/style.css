@@ -1,0 +1,16 @@
+body {
+  background-color: beige;
+}
+
+h1 {
+  color: cornflowerblue;
+  transition: all 300ms ease;
+}
+
+.clicked {
+  color: tomato;
+}
+
+.title_class_name {
+  background-color: gray;
+}
