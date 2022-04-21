@@ -11,7 +11,9 @@ function deleteToDo(event) {
   const li = event.target.parentElement;
   // target은 클릭된 html element를 뜻한다.
   // target에는 여러개의 프로퍼티가 존재하고 parentElement는 클릭된 html el의 부모
+  toDos = toDos.filter((toDo) => toDo.id !== parseInt(li.id)); // 둘의 데이터타입이 다르기 때문에 데이터 타입을 같게 만들지 않으면 !== 의 조건이 true가 되기 때문에 삭제가 제대로 이루어지지 않는다.
   li.remove();
+  savedTodo();
 }
 function paintToDo(newTodo) {
   const li = document.createElement("li");
