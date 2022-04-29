@@ -15,7 +15,8 @@
   <!-- Your custom script here -->
   <script type="text/babel">
     const root = document.getElementById("root");
-    function App() {
+    // MinutesToHours ==========================================================
+    function MinutesToHours() {
       const [amount, setAmout] = React.useState(0);
       const [flipped, setFlipped] = React.useState(false);
       //첫번째 인자는 value, 두번째 인자는 input에 새로운 값을 입력할 때마다 state를 업데이트하는 함수
@@ -31,7 +32,6 @@
       };
       return (
         <div>
-          <h1>super Converter</h1>
           <div>
             <label htmlFor="minutes">Minutes</label>
             <input
@@ -55,10 +55,36 @@
             />
           </div>
           <button onClick={reset}>reset</button>
-          <button onClick={onFlip}>Filp</button>
+          <button onClick={onFlip}>{flipped ? "Turn back" : "invert"}</button>
         </div>
       );
     }
+
+    // KmToMiles ==========================================================
+    function KmToMiles() {
+      return <h3>Km 2 M </h3>;
+    }
+
+    // App ==========================================================
+    function App() {
+      const [index, setIndex] = React.useState("xx");
+      const onSelect = (event) => {
+        setIndex(event.target.value);
+      };
+      return (
+        <div>
+          <h1>super Converter</h1>
+          <select value={index} onChange={onSelect}>
+            <option value="x">옴션을 선택하세요</option>
+            <option value="0">Minutes & Hours</option>
+            <option value="1">Km & Miles</option>
+          </select>
+          {index === "0" ? <MinutesToHours /> : null}
+          {index === "1" ? <KmToMiles /> : null}
+        </div>
+      );
+    }
+
     ReactDOM.render(<App />, root);
   </script>
 </html>
