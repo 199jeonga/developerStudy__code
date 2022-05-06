@@ -62,12 +62,27 @@
 
     // KmToMiles ==========================================================
     function KmToMiles() {
-      return <h3>Km 2 M </h3>;
+      return (
+        <div id="kmtoMiles">
+          <h3>Km 2 M</h3>
+          <form>
+            <div>
+              <label htmlFor="km">Km</label>
+              <input id="km" type="number" />
+            </div>
+            <div>
+              <label htmlFor="miles">Miles</label>
+              <input id="miles" type="number" />
+            </div>
+            <button type="submit" value="reset" />
+          </form>
+        </div>
+      );
     }
 
     // App ==========================================================
     function App() {
-      const [index, setIndex] = React.useState("xx");
+      const [index, setIndex] = React.useState("1");
       const onSelect = (event) => {
         setIndex(event.target.value);
       };
