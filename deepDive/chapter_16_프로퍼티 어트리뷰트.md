@@ -1,5 +1,3 @@
-# 모던자바스크립트 DEEPDIVE - chapter 16 프로퍼티 어트리뷰트
-
 내부 슬록과 내부 메서드는 자바스크립트 엔진의 구현 알고리즘을 설명하기 위해 ECMAScript 사양에서 사용하는 의사 프로퍼티와 의사 메서드다.
 
 - `[[...]]` 이중 대괄호로 감싼 이름들이 내부 슬롯과 내부 메서드이다.
@@ -332,3 +330,150 @@ Object.defineProperties(person, {
 - 프로퍼티를 추가하거나 삭제할 수 있다.
 - 프로퍼티 값을 갱신할 수 있다.
 - Object.definProperty 또는 Object.definedPripertues 메소드를 사용하여 프로퍼티 어트리뷰트를 재정의 할 수도 있다.
+
+자바스크립트는 객체의 변경을 방지하는 다양한 메서드를 제공
+
+| 구분           | 메서드                   | 프로퍼티추가 | 프로퍼티삭제 | 프로퍼티 값 읽기 | 프로퍼티 값 쓰기 | 프로퍼티 어트리뷰트 재정의 |
+| -------------- | ------------------------ | ------------ | ------------ | ---------------- | ---------------- | -------------------------- |
+| 객체 확장 금지 | Object.preventExtensions | X            | O            | O                | O                | O                          |
+| 객체 밀봉      | Object.seal              | X            | X            | O                | O                | X                          |
+| 객체 동결      | Object.freeze            | X            | X            | O                | X                | X                          |
+
+## 객체 확장 금지
+
+`Object.preventExtensions`
+
+메섣는 확장을 금지한다.
+
+- 프로퍼티 추가 금지를 의미한다.
+- 확장이 금지된 객체는 프로퍼티 추가가 금지된다.
+  - 이것이 금지됨!! → 프로퍼치 동적 추가와 `Object.defineProperty` 메서드로 추가할 수 있다.
+
+확장이 가능한 객체인지 확인하는 방법은 `Object.isExtensible` 메서드로 확인이 가능하다.
+
+```jsx
+const person = { name: "Lee" };
+console.log(Object.isExtensible(person)); //true -> 확장 금지된 객체가 아님!!
+
+Object.preventExtensions(person); //객체의 확장을 금지하여 프로퍼티 추가를 금지함
+console.log(Object.isExtensible(person)); //false
+
+person.age = 20; //무시, strict mode에서는 에러가 남
+console.log(person); //{name : "Lee" }
+
+delete person.name;
+console.log(person); //{}
+
+Object.defineProperty(person, "age", { value: 20 }); //프로퍼티 정의에 의한 추가도 금지됨
+//typeError:cannot defined property age, object is not extensible
+```
+
+## 객체 밀봉
+
+`Object.seal`
+
+객체 밀봉이란 프로퍼티 `추가` 및 `삭제`, `어트리뷰트 재정의 금지`
+
+- 읽기, 쓰기만 가능
+
+`Object.isSealed` 메서드로 확인이 가능하다.
+
+```jsx
+const person = { name : "Lee" };
+console.log(Object.isSealed(person)); //false
+
+Object.seal(person); //프로퍼티 추가, 삭제, 재정의 금지
+console.log(Object.isSealed(person)); //true
+
+console.log(Object.getOwnPropertyDescriptors(person));
+/*
+{
+	name : {value:"Lee", writable:true, enumerable:ture, configurable:false}
+}
+*/
+
+person.age = 20;
+delete person.name; // 추가 및 삭제 금지, 해당 요청은 무시된다.
+
+person.name "kim"; //프로퍼티 값 갱신은 가능하다.
+console.log(person); //{name:"kim"}
+
+//어트리뷰트 재정의가 금지되었다.
+Object.defineProperty(person, 'age', { configurable :true });
+//typeError:cannot defined property : name
+
+```
+
+## 객체 동결
+
+`Object.freeze`
+
+객체를 동결한다.
+
+- 프로퍼티 `추가` 및 `삭제`, `프로퍼티 어트리뷰트 재정의 금지`, `프로퍼티 값 갱신금지`
+  - 읽기만 가능하다.
+
+`Object.isFrozen`
+
+```jsx
+const person = { name: "Lee" };
+console.log(Object.isFrozen(person)); //false -> 동결된 객체가 아님
+
+Object.freeze(person);
+console.log(Object.isFrozen(person)); //true
+console.log(Object.getOwnPropertyDescriptors(person));
+/*
+{
+	name:{value:"Lee", writable:false, enumerable:ture, configurable:false}
+}
+*/
+
+person.age = 20;
+delete person.name;
+person.name = "Kim";
+//추가, 삭제, 값갱신이 금지된다. 무시 -> strit mode에서는 에러가 남!!
+
+Object.defineProperty(person, "name", { configurable: true });
+//typeError:cannot defined property : name
+```
+
+## 불변객체
+
+지금까지 살펴본 변경 방지 메서는 얕은 변경방지로 직속 프로퍼티만 변경이 방지되고 중첩 객체까지는 영향을 주지 않음!!
+
+- `Object.freeze` 메서드로 객체를 동결해도 중첩 객체가지 동결할 수 없음
+
+```jsx
+const person = {
+	name : 'Lee',
+	address : {city : 'seoul'}
+}
+
+Object.freeze(person}; //얕은 객체 동결
+
+console.log( Object.isFrozen(person) ) //true
+console.log( Object.isFrozen(person.address) ) //false
+```
+
+객체의 중첩 객체까지 동결하여 변경이 불가능한 읽기 전용의 불변 객체를 구현하려면 **객체를 값으로 갖는 모든 프로퍼티에 대해 재귀적으로 Object.freeze 메서드를 호출해야 함**
+
+```jsx
+function deepFreeze(target) {
+  //객체가 아니거나 동결된 객체는 무시하고 객체이고 동결되지 않은 객체만 동결한다.
+  if (target && typeof target === "object" && !Object.isFrozen(target)) {
+    Object.freeze(target);
+    //Object.keys 메서드는 객체 자신의 열거 가능한 프로퍼티 키를 배열로 반환
+    Object.keys(target).forEach((key) => deepFreeze(target[key]));
+  }
+  return target;
+}
+
+const person = {
+  name: "Lee",
+  address: { city: seoul },
+};
+
+deepFreeze(person);
+console.log(Object.isFrozen(person)); //true
+console.log(Object.isFrozen(person.address)); //true
+```
