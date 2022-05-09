@@ -12,126 +12,37 @@
     src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
   ></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.8.1/prop-types.min.js"></script>
   <!-- Your custom script here -->
   <script type="text/babel">
     const root = document.getElementById("root");
-    // MinutesToHours ==========================================================
-    function MinutesToHours() {
-      const [amount, setAmout] = React.useState(0);
-      const [flipped, setFlipped] = React.useState(false);
-      //첫번째 인자는 value, 두번째 인자는 input에 새로운 값을 입력할 때마다 state를 업데이트하는 함수
-      //사용자가 input에 새로운 값을 입력할 때마다 state업데이트를 한다. -->>> onChange
-      const onChange = (event) => {
-        setAmout(event.target.value);
-      };
-      const reset = () => setAmout(0);
-      // const onFlip = () => setFlipped(!flipped);
-      const onFlip = () => {
-        reset();
-        setFlipped((current) => !current);
-      };
-      return (
-        <div>
-          <div>
-            <label htmlFor="minutes">Minutes</label>
-            <input
-              value={flipped ? amount * 60 : amount}
-              id="minutes"
-              placeholder="minutes"
-              type="number"
-              onChange={onChange} //인풋에 변화가 생기면 onChange 함수를 실행함
-              disabled={flipped === true} //{flipped}
-            />
-          </div>
-          <div>
-            <label htmlFor="hours">Houres</label>
-            <input
-              value={flipped ? amount : Math.round(amount / 60)}
-              id="hours"
-              placeholder="Houres"
-              type="number"
-              onChange={onChange}
-              disabled={flipped === false} //{!flipped}
-            />
-          </div>
-          <button onClick={reset}>reset</button>
-          <button onClick={onFlip}>{flipped ? "Turn back" : "invert"}</button>
-        </div>
-      );
-    }
-
-    // KmToMiles ==========================================================
-    function KmToMiles() {
-      const [calc, setCalc] = React.useState(0);
-      const [change, setChange] = React.useState(false);
-
-      const onCalcHandle = (e) => {
-        setCalc(e.target.value);
-      };
-      const onResetHandle = () => {
-        setCalc(0);
-      };
-      const onChangeHandle = () => {
-        onResetHandle();
-        setChange(!change);
-      };
-      return (
-        <div id="kmtoMiles">
-          <h3>Km 2 M</h3>
-          <form>
-            <div>
-              <label htmlFor="km">Km</label>
-              <input
-                id="km"
-                type="number"
-                value={change ? calc / 1000 : calc}
-                onChange={onCalcHandle}
-                disabled={change}
-              />
-            </div>
-            <div>
-              <label htmlFor="miles">Miles</label>
-              <input
-                id="miles"
-                type="number"
-                value={change ? calc : calc * 1000}
-                onChange={onCalcHandle}
-                disabled={!change}
-              />
-            </div>
-            <button type="submit" onClick={onResetHandle}>
-              reset
-            </button>
-            <button type="button" onClick={onChangeHandle}>
-              unit change
-            </button>
-          </form>
-        </div>
-      );
-    }
-
-    // Option ==========================================================
-    function Option() {
-      return <h2>원하는 단위를 골라주세요!</h2>;
-    }
 
     // App ==========================================================
+    function Btn({ text, fontSize = 16 }) {
+      return (
+        <button
+          style={{
+            backgroundColor: "tomato",
+            color: "white",
+            padding: "10px 20px",
+            border: 0,
+            borderRadius: 10,
+            fontSize,
+          }}
+        >
+          {text}
+        </button>
+      );
+    }
+    Btn.propTypes = {
+      text: PropTypes.string.isRequired,
+      fontSize: PropTypes.number,
+    };
     function App() {
-      const [index, setIndex] = React.useState("1");
-      const onSelect = (event) => {
-        setIndex(event.target.value);
-      };
       return (
         <div>
-          <h1>super Converter</h1>
-          <select value={index} onChange={onSelect}>
-            <option value="x">옴션을 선택하세요</option>
-            <option value="0">Minutes & Hours</option>
-            <option value="1">Km & Miles</option>
-          </select>
-          {index === "x" ? <Option /> : null}
-          {index === "0" ? <MinutesToHours /> : null}
-          {index === "1" ? <KmToMiles /> : null}
+          <Btn text="Save Changes" fontSize={18} />
+          <Btn text="second Btn" />
         </div>
       );
     }
