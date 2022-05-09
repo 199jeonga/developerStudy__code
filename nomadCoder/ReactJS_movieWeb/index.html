@@ -62,22 +62,57 @@
 
     // KmToMiles ==========================================================
     function KmToMiles() {
+      const [calc, setCalc] = React.useState(0);
+      const [change, setChange] = React.useState(false);
+
+      const onCalcHandle = (e) => {
+        setCalc(e.target.value);
+      };
+      const onResetHandle = () => {
+        setCalc(0);
+      };
+      const onChangeHandle = () => {
+        onResetHandle();
+        setChange(!change);
+      };
       return (
         <div id="kmtoMiles">
           <h3>Km 2 M</h3>
           <form>
             <div>
               <label htmlFor="km">Km</label>
-              <input id="km" type="number" />
+              <input
+                id="km"
+                type="number"
+                value={change ? calc / 1000 : calc}
+                onChange={onCalcHandle}
+                disabled={change}
+              />
             </div>
             <div>
               <label htmlFor="miles">Miles</label>
-              <input id="miles" type="number" />
+              <input
+                id="miles"
+                type="number"
+                value={change ? calc : calc * 1000}
+                onChange={onCalcHandle}
+                disabled={!change}
+              />
             </div>
-            <button type="submit" value="reset" />
+            <button type="submit" onClick={onResetHandle}>
+              reset
+            </button>
+            <button type="button" onClick={onChangeHandle}>
+              unit change
+            </button>
           </form>
         </div>
       );
+    }
+
+    // Option ==========================================================
+    function Option() {
+      return <h2>원하는 단위를 골라주세요!</h2>;
     }
 
     // App ==========================================================
@@ -94,6 +129,7 @@
             <option value="0">Minutes & Hours</option>
             <option value="1">Km & Miles</option>
           </select>
+          {index === "x" ? <Option /> : null}
           {index === "0" ? <MinutesToHours /> : null}
           {index === "1" ? <KmToMiles /> : null}
         </div>
