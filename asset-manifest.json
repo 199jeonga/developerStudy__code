@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/developerStudy__code/movie_web/static/js/main.657e4942.js",
-    "index.html": "/developerStudy__code/movie_web/index.html",
-    "main.657e4942.js.map": "/developerStudy__code/movie_web/static/js/main.657e4942.js.map"
+    "main.js": "/developerStudy__code/static/js/main.13bd98fa.js",
+    "index.html": "/developerStudy__code/index.html",
+    "main.13bd98fa.js.map": "/developerStudy__code/static/js/main.13bd98fa.js.map"
   },
   "entrypoints": [
-    "static/js/main.657e4942.js"
+    "static/js/main.13bd98fa.js"
   ]
 }
