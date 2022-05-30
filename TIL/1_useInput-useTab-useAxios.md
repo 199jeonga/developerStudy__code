@@ -1,5 +1,3 @@
-# 회원가입 페이지를 만들기 위한 정리(useInput, )
-
 # useInput
 
 useInput은 raact hook이 아닌, hook을 보다 깔끔하게 사용할 수 있는 function이다.
@@ -165,3 +163,32 @@ HTTP 리퀘스트를 만든다.
 
 - default URL을 설정하거나 자동으로 헤더를 설정하는 것을 동의한다.
 - axios instance를 얻을 것이고, 만약 그렇지 못한다면 import한 axios를 전달해줄 것이다!
+
+## index.js
+
+```jsx
+import React, {useState, useEffect, useRef} form "react";
+import ReactDom from "react-dom";
+
+const App = () => {
+	// const request = useAxios({url:"data를 가져올 URL"}, )
+	// axios는 첫번째로 URL을 받는다.
+	// 그리고 그들에게 instance를 주지 않은 게 보임
+	const {loading, data, refetch} = useAxios({url:"data를 가져올 URL"}, )
+
+
+	return (
+		<div className ="App">
+			<h1>{data && data.status}</h1>
+
+			<h2>{loading && "Loading"}</h2>
+			{/* ^ loading일 때는 이렇게 되야 함 h2에 loading이라는 글자가 나오고, loading이 끝나면..!! h2가 사라진다. 이것은 refetch를 확인할 때, 현재 로딩중인 것을 확인하기 위해 작성함*/}
+			<button onClick={refetch}>refetch</button>
+		</div>
+	)
+}
+const rootElement = document.getElementById("root");
+ReactDOM.render(<App />, rootElement);
+```
+
+## useAxios.js
